@@ -19,6 +19,7 @@
   let dy = 0;
   let dw = 0;
   let dh = 0;
+  let aspectRatio;
   async function render() {
     // use canvas to prevent img tag's auto resize
     canvas.width = width;
@@ -36,6 +37,7 @@
       width: width * scale,
       height: height * scale
     });
+    aspectRatio = height / width;
     if (!["image/jpeg", "image/png"].includes(file.type)) {
       canvas.toBlob(blob => {
         dispatch("update", {
@@ -54,16 +56,20 @@
       if (directions.includes("left")) {
         dx = _dx;
         dw = -_dx;
+        dh = -_dx * aspectRatio;
       }
       if (directions.includes("top")) {
         dy = _dy;
         dh = -_dy;
+        dw = -_dy / aspectRatio;
       }
       if (directions.includes("right")) {
         dw = _dx;
+        dh = _dx * aspectRatio;
       }
       if (directions.includes("bottom")) {
         dh = _dy;
+        dw = _dy / aspectRatio;
       }
     }
   }
